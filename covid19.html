@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="http://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+  
+    <title>COVID19</title>
+    <style>
+        .header{
+            background-color: aqua;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .thead-dark1{
+            background-color: black;
+            color: white;
+        }
+        body{
+            background-color: cornsilk;
+        }
+      
+
+    </style>
+</head>
+<body >
+    <section class="header">
+        <h1 class="text-center">Covid Stats</h1>
+    </section>
+    <div class="container"> 
+<table id="covidtable" class="table table-striped table-bordered nowrap table-responsive">
+    <thead class="thead-dark1">
+        <tr>
+            <th>Country</th>
+            <th>NewConfirmed</th>
+            <th>Total cases</th>
+            <th>Recovered</th>
+            <th>Death</th>
+            
+        </tr>
+    </thead>
+    <tbody id="tbbody" class="ta-light">
+
+    </tbody>
+
+</table>
+    </div>
+    
+</body>
+</html>
+<script>
+    var coutries=[]
+    $.ajax({
+        url:"https://api.covid19api.com/summary",
+        type:"get",
+        dataType:"json",
+        success:function(response){
+            coutries=response.Countries;
+         updatetable(coutries) 
+        
+        },
+    error:function(){
+        console.log(error)
+
+    },
+    always:function(){
+
+    }
+    })
+    updatetable =(coutries)=>{
+        for (country of coutries) {
+            var newrow="<tr><td>"+ country.Country+"</td><hr/><td>"+ country.NewConfirmed+"</td><hr/><td>"+ country.TotalConfirmed+"</td><hr/><td>"+ country.TotalRecovered+"</td><hr/><td>"+ country.TotalDeaths+"</td></tr>"
+      
+            $("#tbbody").append(newrow)
+        }
+            
+           
+    $('#covidtable').dataTable();
+
+}
+</script>
+
